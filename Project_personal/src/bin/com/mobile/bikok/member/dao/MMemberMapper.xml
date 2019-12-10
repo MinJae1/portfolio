@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobile.bikok.member.dao.ImMemberDao">
+	<resultMap id="memberMap"
+		type="com.mobile.bikok.member.model.MMemberVO">
+		<result property="id" column="ID" />
+		<result property="memberId" column="MEMBERID" />
+		<result property="pwd" column="PWD" />
+		<result property="name" column="NAME" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+	</resultMap>
+
+	<insert id="joinMember"
+		parameterType="com.mobile.bikok.member.model.MMemberVO">
+		INSERT INTO member (ID, MEMBERID, PWD, NAME, PHONE,
+		email)
+		VALUES
+		((SELECT
+		NVL(MAX(ID),0)+1 FROM
+		member),#{memberId},#{pwd},#{name},#{phone},#{email})
+
+	</insert>
+
+	<select id="mobileLogin"
+		resultType="com.mobile.bikok.member.model.MMemberVO">
+		Select *
+		from member
+		where MEMBERID = #{memberId} and PWD =
+		#{pwd}
+	</select>
+
+	<select id="pwdCheck" resultType="String">
+		Select PWD
+		from member
+		where
+		MEMBERID = #{memberId}
+	</select>
+
+	<select id="idCheck" resultType="int">
+		Select count(*)
+		from member
+		where
+		MEMBERID = #{memberId}
+	</select>
+
+	<update id="">
+		UPDATE member SET
+		phone = #{phone},
+		email = #{email}
+		WHERE ID = ${id}
+
+	</update>
+
+</mapper>

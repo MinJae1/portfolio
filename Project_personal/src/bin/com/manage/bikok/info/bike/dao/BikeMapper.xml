@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.manage.bikok.info.bike.dao.IBikeDao">
+	<insert id="newBike"
+		parameterType="com.manage.bikok.info.bike.model.BikeVO">
+		INSERT INTO bike (NO, BIKECODE, state)
+		VALUES ((SELECT
+		NVL(MAX(NO),0)+1 FROM bike),
+		#{code},
+		0 )
+
+	</insert>
+
+	<select id="bikeList"
+		resultType="com.manage.bikok.info.bike.model.BikeVO">
+		select
+		NO as no,
+		BIKECODE as code,
+		STATE as state
+		from bike
+	</select>
+
+	<select id="bikeInfo"
+		resultType="com.manage.bikok.info.bike.model.BikeVO">
+		select
+		NO as no,
+		BIKECODE as code,
+		STATE as state
+		from bike
+		where no =${no}
+	</select>
+
+	<update id="modBike"
+		parameterType="com.manage.bikok.info.bike.model.BikeVO">
+		UPDATE bike SET
+		BIKECODE = #{code},
+		STATE = ${state}
+		WHERE
+		no = ${no}
+	</update>
+
+</mapper>

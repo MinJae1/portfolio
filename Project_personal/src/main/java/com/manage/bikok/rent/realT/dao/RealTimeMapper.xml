@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.bikok.rent.realT.dao.IRealTimeDao">
+
+
+	<select id="usingTimeList"
+		resultType="com.manage.bikok.rent.realT.model.RealTimerVO">
+		SELECT
+		bist.no as no,
+		bist.BIKE_ID as bikeId,
+		bi.BIKECODE as code,
+		bist.LOCK_STATE as state,
+		bist.RUNNING_TIME as time,
+		bist.REAL_TIME as realtime,
+		bist.MEMBER_NO as userId,
+		mem.NAME as
+		username
+		FROM BIKE_USER bist
+		join MEMBER mem
+		on bist.MEMBER_NO = mem.id
+		join bike bi
+		on bist.BIKE_ID = bi.no
+		ORDER BY no desc
+
+	</select>
+
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobile.bikok.rent.dao.ImRentDao">
+
+	<insert id="RentBike"
+		parameterType="com.mobile.bikok.rent.model.MRentVO">
+		INSERT INTO BIKE_USER (NO, BIKE_ID, LOCK_STATE,
+		RENT_TIME, RUNNING_TIME, RETURN_TIME, MEMBER_NO, MEMBER_ID, REAL_TIME,
+		LONGITUDE, LATITUDE, BWS)
+		VALUES ((SELECT
+		NVL(MAX(NO),0)+1 FROM
+		BIKE_USER),
+		#{bike_id},
+		${lock_state},
+		#{rent_time},
+		#{running_time},
+		#{return_time},
+		${member_no},
+		#{member_id},
+		#{real_time},
+		${longitude},
+		${latitude},
+		${bws})
+	</insert>
+
+	<update id="ReturnBike"
+		parameterType="com.mobile.bikok.rent.model.MRentVO">
+		UPDATE BIKE_USER SET
+		LOCK_STATE = ${lock_state},
+		RUNNING_TIME = #{running_time},
+		RETURN_TIME = #{return_time}
+		WHERE NO =
+		${no}
+	</update>
+
+	<update id="runningTimeUpdate"
+		parameterType="com.mobile.bikok.rent.model.MRentVO">
+		UPDATE BIKE_USER SET
+		RUNNING_TIME = #{running_time},
+		REAL_TIME = #{real_time},
+		BWS = ${bws}
+		WHERE NO = ${no}
+	</update>
+
+	<select id="getNo"
+		parameterType="com.mobile.bikok.rent.model.MRentVO" resultType="int">
+		SELECT
+		MAX(no)
+		from BIKE_USER
+		where BIKE_ID = #{bike_id} and MEMBER_NO =
+		${member_no}
+	</select>
+
+	<select id="getPosition"
+		resultType="com.mobile.bikok.rent.model.MRentVO">
+		SELECT *
+		FROM BIKE_USER
+		where BIKE_ID = ${bike_id} and
+		MEMBER_NO = ${member_no}
+		and REAL_TIME = #{real_time}
+	</select>
+
+
+</mapper>

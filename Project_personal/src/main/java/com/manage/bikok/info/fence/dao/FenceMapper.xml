@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.manage.bikok.info.fence.dao.IFenceDao">
+
+	<select id="fenceList"
+		resultType="com.manage.bikok.info.fence.model.FenceVO">
+		select
+		NO as no,
+		NAME as name,
+		SUMMARY as summary,
+		TO_CHAR(WDATE, 'YYYY-MM-DD') as wDate,
+		LATITUDE as latitude,
+		LOGITUDE as
+		logitude
+		from fence
+		ORDER BY no desc
+
+	</select>
+
+	<insert id="addFence"
+		parameterType="com.manage.bikok.info.fence.model.FenceVO">
+		INSERT INTO fence (NO, NAME, SUMMARY, WDATE, LATITUDE,
+		LOGITUDE)
+		VALUES ((SELECT NVL(MAX(NO),0)+1 FROM fence),
+		#{name},
+		#{summary},
+		TO_DATE( ${wDate} , 'YYYYMMDD' ),
+		#{latitude} ,
+		#{logitude} )
+	</insert>
+
+	<select id="getFence"
+		resultType="com.manage.bikok.info.fence.model.FenceVO">
+		select
+		NO as no,
+		NAME as name,
+		SUMMARY as summary,
+		TO_CHAR(WDATE, 'YYYY-MM-DD') as wDate,
+		LATITUDE as latitude,
+		LOGITUDE as
+		logitude
+		from fence
+		where no = ${no}
+	</select>
+
+	<update id="modifyFence"
+		parameterType="com.manage.bikok.info.fence.model.FenceVO">
+		UPDATE fence SET
+		NAME = #{name},
+		SUMMARY = #{summary},
+		LATITUDE = #{latitude},
+		LOGITUDE = #{logitude}
+		WHERE no = ${no}
+
+	</update>
+
+</mapper>

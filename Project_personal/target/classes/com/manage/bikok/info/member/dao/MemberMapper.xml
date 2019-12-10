@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.bikok.info.member.dao.IMemberDao">
+	<resultMap id="memberMap"
+		type="com.manage.bikok.info.member.model.MemberVO">
+		<result property="id" column="ID" />
+		<result property="userId" column="USERID" />
+		<result property="pwd" column="PWD" />
+		<result property="name" column="NAME" />
+		<result property="phone" column="PHONE" />
+	</resultMap>
+
+	<insert id="addManage"
+		parameterType="com.manage.bikok.info.member.model.MemberVO">
+		INSERT INTO Manage (ID, UserID, PWD, NAME, PHONE)
+		VALUES
+		((SELECT
+		NVL(MAX(ID),0)+1 FROM
+		Manage),#{userId},#{pwd},#{name},#{phone})
+
+	</insert>
+
+	<select id="login"
+		resultType="com.manage.bikok.info.member.model.MemberVO">
+		Select *
+		from manage
+		where UserID = #{userId} and PWD =
+		#{pwd}
+	</select>
+	
+	<select id="pwdCheck"
+		resultType="String">
+		Select PWD
+		from manage
+		where UserID = #{userId}
+	</select>
+
+	<select id="idCheck" resultType="int">
+		Select count(*)
+		from manage
+		where
+		UserID = #{userId}
+	</select>
+
+</mapper>

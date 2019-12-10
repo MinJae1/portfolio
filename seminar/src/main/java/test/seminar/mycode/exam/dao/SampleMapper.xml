@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="test.seminar.mycode.exam.dao.ISampleRepository">
+	<resultMap id="wrMap"
+		type="seminar.mycode.exam.model.SampleVO">
+		<result property="wrId" column="WR_ID" />
+		<result property="wrTitle" column="WR_TITLE" />
+		<result property="wrContent" column="WR_CONTENT" />
+		<result property="wrDate" column="WR_DATE" />
+		<result property="wrHits" column="WR_HITS" />
+	</resultMap>
+
+	<!-- <select id="getWrListCount" resultType="int"> select count(*) from 
+		TESTTABLE </select> -->
+	<select id="getWrListSearchCount" resultType="int"
+		parameterType="String">
+		select count(*)
+		from TESTTABLE
+		<if test="word != null">
+			where WR_TITLE like '%'||#{word}||'%'
+		</if>
+	</select>
+
+	<select id="getWrList" resultMap="wrMap" parameterType="String">
+		select *
+		from TESTTABLE
+		<if test="word != null">
+			where WR_TITLE like '%'||#{word}||'%'
+		</if>
+
+	</select>
+
+	<select id="wrDetailView" resultMap="wrMap" parameterType="int">
+		select *
+		from TESTTABLE
+		where
+		WR_ID = #{wrId}
+	</select>
+
+	<insert id="insertWriting"
+		parameterType="test.seminar.mycode.exam.model.SampleVO">
+		INSERT INTO testtable (WR_TITLE, WR_CONTENT)
+		VALUES (#{wrTitle}, #{wrContent})
+	</insert>
+
+	<update id="updateWriting">
+		UPDATE testtable
+		SET WR_TITLE=#{wrTitle},
+		WR_CONTENT=#{wrContent}
+		WHERE WR_ID=#{wrId}
+	</update>
+
+	<delete id="deleteWriting"
+		parameterType="test.seminar.mycode.exam.model.SampleVO">
+		DELETE FROM testtable WHERE wr_id = #{wrId}
+	</delete>
+</mapper>
